@@ -103,7 +103,7 @@
             await clickElement(selectedCard);
             await new Promise(r => setTimeout(r, 100)); // Short delay for UI update
 
-            // Enhanced Apply button clicking
+            // Enhanced Apply button clicking with href capture
             const applyBtn = await waitForElement(() => {
                 const btn = document.querySelector('[data-test-id="jobDetailApplyButtonDesktop"]');
                 return btn && !btn.disabled ? btn : null;
@@ -117,10 +117,22 @@
                 applyBtn.classList.remove('disabled');
             }
 
-            const clicked = await clickElement(applyBtn);
-            if (!clicked) throw new Error('Failed to click Apply button');
+            // Get the application URL before clicking
+            const applicationUrl = applyBtn.getAttribute('data-application-url') || 
+                                 applyBtn.getAttribute('href') ||
+                                 document.querySelector('a[href*="/application/ca/"]')?.href;
 
-            console.log('✅ Successfully clicked Apply button');
+            if (applicationUrl) {
+                // Open the application URL in a new tab
+                window.open(applicationUrl, '_blank');
+                console.log('✅ Opened application in new tab');
+            } else {
+                // Fallback to normal click if URL not found
+                const clicked = await clickElement(applyBtn);
+                if (!clicked) throw new Error('Failed to click Apply button');
+            }
+
+            console.log('✅ Successfully handled Apply button');
         } catch (err) {
             console.error('🚫 Error on jobDetail page:', err);
         }
@@ -130,17 +142,21 @@
         console.log('📝 On application/consent page');
 
         try {
+            // Wait longer for the Create Application button and try multiple selectors
             const createAppBtn = await waitForElement(() => {
-                const btns = [...document.querySelectorAll('button, div[role="button"]')];
-                return btns.find(btn => 
-                    btn.textContent?.trim() === 'Create Application' ||
-                    btn.querySelector('div')?.textContent?.trim() === 'Create Application'
+                // Try multiple selector strategies
+                return (
+                    document.querySelector('button[data-test-id*="create-application"]') ||
+                    document.querySelector('div[role="button"]:has-text("Create Application")') ||
+                    Array.from(document.querySelectorAll('button, div[role="button"]'))
+                        .find(el => el.textContent?.trim() === 'Create Application' ||
+                                  el.querySelector('div')?.textContent?.trim() === 'Create Application')
                 );
-            }, 3000);
+            }, 5000);
 
             if (!createAppBtn) throw new Error('Create Application button not found');
 
-            console.log('✅ Clicking Create Application button...');
+            console.log('✅ Found Create Application button, clicking...');
             await clickElement(createAppBtn);
 
             // Redirect faster
@@ -150,15 +166,30 @@
             }, 2000);
         } catch (err) {
             console.error('🚫 Error on application/consent page:', err);
+            // Fallback: try to find the button again with a different strategy
+            try {
+                const allButtons = document.querySelectorAll('button, div[role="button"]');
+                for (const btn of allButtons) {
+                    if (btn.textContent?.includes('Create Application')) {
+                        await clickElement(btn);
+                        break;
+                    }
+                }
+            } catch (fallbackErr) {
+                console.error('🚫 Fallback also failed:', fallbackErr);
+            }
         }
     }
 
-    // Routing logic
+    // Enhanced routing logic with URL validation
     const url = window.location.href;
+    console.log('📍 Current URL:', url);
 
     if (url.includes('/jobDetail')) {
         await handleJobDetailPage();
     } else if (url.includes('/application/ca/') || url.includes('/consent')) {
         await handleApplicationPage();
+    } else {
+        console.log('⚠️ Not on a handled page:', url);
     }
 })();
