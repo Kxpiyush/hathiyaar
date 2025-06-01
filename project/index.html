@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="popup.css">
+    <script defer src="../libs/fontawesome-all.min.js"></script>
+    <script src="libs/sweetalert2.min.js"></script>
+    <script src="libs/sweetalert2.all.min.js"></script>
+    <script src="popup.js"></script>
+</head>
+<body>
+    <section class="popup-container">
+        <header>
+            <img src="images/logo.png" alt="Amazon Jobs Logo" class="logo">
+            <h1>Amazon Job Scheduler <br><span id="version"></span></h1>
+        </header>
+
+        <div class="dashboard">
+            <div class="toggle-section">
+                <label class="switch">
+                    <input type="checkbox" id="activate">
+                    <span class="slider round"></span>
+                </label>
+                <label for="activate">Activate the script</label>
+            </div>
+
+            <div class="dropdowns-container">
+                <label for="city">City:</label>
+                <select id="city" name="city">
+                    <option value="Acheson">Acheson</option>
+                    <option value="Ajax">Ajax</option>
+                    <option value="Balzac">Balzac</option>
+                    <option value="Bolton">Bolton</option>
+                    <option value="Brampton">Brampton</option>
+                    <option value="Calgary">Calgary</option>
+                    <option value="Cambridge">Cambridge</option>
+                    <option value="Concord">Concord</option>
+                    <option value="Dartmouth">Dartmouth</option>
+                    <option value="Edmonton">Edmonton</option>
+                    <option value="Etobicoke">Etobicoke</option>
+                    <option value="Hamilton">Hamilton</option>
+                    <option value="Mississauga">Mississauga</option>
+                    <option value="Nisku">Nisku</option>
+                    <option value="Ottawa">Ottawa</option>
+                    <option value="Rocky View">Rocky View</option>
+                    <option value="Scarborough">Scarborough</option>
+                    <option value="Sidney">Sidney</option>
+                    <option value="ST. Thomas">ST. Thomas</option>
+                    <option value="Stoney Creek">Stoney Creek</option>
+                    <option value="Toronto">Toronto</option>
+                    <option value="Vancouver">Vancouver</option>
+                    <option value="Vaughan">Vaughan</option>
+                    <option value="Whitby">Whitby</option>
+                    <option value="Windsor">Windsor</option>
+                </select>
+
+                <label for="distance">Distance (km):</label>
+                <select id="distance" name="distance">
+                    <option value="5">5</option>
+                    <option value="15">15</option>
+                    <option value="25">25</option>
+                    <option value="35">35</option>
+                    <option value="50">50</option>
+                    <option value="75">75</option>
+                    <option value="150">150</option>
+                </select>
+
+                <label for="work_hours">Work Hours:</label>
+                <select id="work_hours" name="work_hours">
+                    <option value="Any">Any</option>
+                    <option value="Full-Time">Full-Time</option>
+                    <option value="Part-Time">Part-Time</option>
+                </select>
+            </div>
+
+            <div class="tag-input-container">
+                <div id="tag-input-box">
+                    <input type="text" id="city-input" placeholder="Type a city and press enter">
+                </div>
+                <span id="clear-all">Clear all</span>
+            </div>
+
+            <p class="autosave-text">Changes are autosaved.</p>
+
+            <div class="buttons-container">
+                <form class="button-form" name="ais_visa_info" id="ais_visa_info">
+                    <button id="reset_info" type="submit" class="button configure">Reset</button>
+                </form>
+                <button id="tutorial" form="none" class="button contact">Tutorial</button>
+            </div>
+        </div>
+    </section>
+    <script src="content.js"></script>
+</body>
+</html>

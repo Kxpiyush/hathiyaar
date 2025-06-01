@@ -1,0 +1,67 @@
+{
+    "update_url": "https://clients2.google.com/service/update2/crx",
+    "manifest_version": 3,
+    "name": "Shift Scheduler",
+    "version": "4.25.1",
+    "description": "This extension books Amazon warehouse shifts automatically.",
+    "icons": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    },
+    "permissions": [
+      "tabs",
+      "storage",
+      "activeTab",
+      "declarativeContent",
+      "scripting"
+    ],
+    "host_permissions": [
+      "https://hiring.amazon.ca/*",
+      "https://auth.hiring.amazon.com/*"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "images/popup.png",
+          "alert.wav"
+        ],
+        "matches": [
+          "<all_urls>"
+        ]
+      }
+    ],
+    "externally_connectable": {
+      "matches": [
+        "https://hiring.amazon.ca/*",
+        "https://auth.hiring.amazon.com/*"
+      ]
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "index.html"
+    },
+    "content_scripts": [
+      {
+        "matches": [
+          "https://hiring.amazon.ca/*",
+          "https://auth.hiring.amazon.com/*"
+        ],
+        "js": [
+          "sweetalert.js",
+          "fetch.js",
+          "content.js",
+          "Createapp.js"
+        ],
+        "css": [
+          "/css/sweetalert.css",
+          "popup.css"
+        ],
+        "run_at": "document_idle"
+      }
+    ],
+    "incognito": "spanning"
+  }
+  
